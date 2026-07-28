@@ -2,7 +2,8 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { api } from '../lib/api'
 import { toast } from 'sonner'
 
-const WS_BASE = import.meta.env.VITE_WS_URL || 'ws://127.0.0.1:8000'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api'
+const WS_BASE = import.meta.env.VITE_WS_URL || API_BASE.replace(/^http/, 'ws').replace(/\/api\/?$/, '')
 const MAX_RETRIES = 20
 
 const INITIAL = {

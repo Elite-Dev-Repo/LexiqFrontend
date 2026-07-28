@@ -71,7 +71,7 @@ class ApiClient {
       });
       if (!res.ok) return false;
       const data = await res.json();
-      this.setTokens(data.access, null);
+      this.setTokens(data.access, data.refresh);
       return true;
     } catch {
       return false;
