@@ -210,8 +210,8 @@ export default function Room() {
               <ArrowLeft className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md border-2 border-border bg-primary">
-                <Zap className="h-3.5 w-3.5 text-text" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border-x-4 border-y-4 border-y-transparent border-border bg-none rotate-45 ">
+                <Gamepad2 className="h-5 w-5 text-text" />
               </div>
               <span className="text-sm font-bold text-text">Lexiq</span>
             </div>
