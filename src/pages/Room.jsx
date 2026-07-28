@@ -19,6 +19,7 @@ import {
   RefreshCw,
   Layers,
   Clock,
+  Gamepad2,
 } from "lucide-react";
 
 export default function Room() {
@@ -84,8 +85,8 @@ export default function Room() {
       <div className="flex min-h-screen flex-col items-center justify-center bg-bg px-4">
         <div className="w-full max-w-sm">
           <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-border bg-primary shadow-neubrutal-sm">
-              <Zap className="h-5 w-5 text-text" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border-x-4 border-y-4 border-y-transparent border-border bg-none rotate-45 ">
+              <Gamepad2 className="h-5 w-5 text-text" />
             </div>
             <span className="text-xl font-bold text-text">Lexiq</span>
           </div>
@@ -185,7 +186,9 @@ export default function Room() {
       <div className="flex min-h-screen flex-col items-center justify-center bg-bg gap-4 px-4">
         <div className="flex flex-col items-center gap-4">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <p className="text-sm font-medium text-text-secondary">Connection lost. Reconnecting...</p>
+          <p className="text-sm font-medium text-text-secondary">
+            Connection lost. Reconnecting...
+          </p>
         </div>
       </div>
     );
@@ -193,272 +196,272 @@ export default function Room() {
 
   return (
     <>
-      <SEO title={state.code ? `Room ${state.code}` : 'Room'} />
+      <SEO title={state.code ? `Room ${state.code}` : "Room"} />
       <div className="min-h-screen bg-bg">
-      <header className="flex items-center justify-between border-b-2 border-border bg-surface px-4 py-3 md:px-8">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => {
-              leaveRoom();
-              navigate("/", { replace: true });
-            }}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-border bg-surface text-text hover:bg-surface-hover hover:text-primary transition-all active:scale-95 cursor-pointer"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md border-2 border-border bg-primary">
-              <Zap className="h-3.5 w-3.5 text-text" />
+        <header className="flex items-center justify-between border-b-2 border-border bg-surface px-4 py-3 md:px-8">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                leaveRoom();
+                navigate("/", { replace: true });
+              }}
+              className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-border bg-surface text-text hover:bg-surface-hover hover:text-primary transition-all active:scale-95 cursor-pointer"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md border-2 border-border bg-primary">
+                <Zap className="h-3.5 w-3.5 text-text" />
+              </div>
+              <span className="text-sm font-bold text-text">Lexiq</span>
             </div>
-            <span className="text-sm font-bold text-text">Lexiq</span>
           </div>
-        </div>
 
-        {state.code && (
-          <button
-            onClick={handleCopy}
-            className="flex items-center gap-2 rounded-xl border-2 border-border bg-surface px-4 py-2 text-sm font-mono font-bold text-text shadow-neubrutal-sm transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neubrutal active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer"
-          >
-            {state.code}
-            {copied ? (
-              <Check className="h-4 w-4" />
-            ) : (
-              <Copy className="h-4 w-4" />
-            )}
-          </button>
-        )}
-
-        <div className="flex items-center gap-3">
-          <span className="hidden text-sm font-bold text-text-secondary md:block">
-            {user?.username}
-          </span>
-          <span className="h-3.5 w-3.5 rounded-full border-2 border-border bg-success animate-pulse" />
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-8">
-        {state.phase === "lobby" && (
-          <div className="grid gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-2 space-y-6">
-              <div>
-                <h1 className="text-2xl font-bold text-text">Game Lobby</h1>
-                <p className="mt-1 text-sm font-medium text-text-secondary">
-                  Share the room code with friends to join the game.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border-2 border-border bg-surface p-6 shadow-neubrutal">
-                <div className="flex items-center justify-between mb-5">
-                  <h2 className="text-sm font-bold text-text flex items-center gap-2 uppercase tracking-wider">
-                    <Users className="h-4 w-4" />
-                    Players ({state.members.length})
-                  </h2>
-                  {state.isHost && waitingForPlayers.length > 0 && (
-                    <span className="text-xs font-bold text-text-tertiary">
-                      {waitingForPlayers.length} waiting
-                    </span>
-                  )}
-                </div>
-
-                <div className="space-y-3">
-                  {state.members.map((m) => (
-                    <div
-                      key={m.user_id}
-                      className={`flex items-center justify-between rounded-xl px-4 py-3 border-2 border-border shadow-neubrutal-sm transition-all ${
-                        m.is_host
-                          ? "bg-primary text-text font-bold"
-                          : "bg-surface hover:bg-surface-hover font-semibold text-text-secondary"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold border-2 border-border ${
-                            m.is_host
-                              ? "bg-bg text-text"
-                              : "bg-primary text-text"
-                          }`}
-                        >
-                          {m.username?.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-text">
-                            {m.username}
-                          </p>
-                          {m.is_host && (
-                            <p className="text-[10px] text-text-secondary font-bold flex items-center gap-1 uppercase tracking-wider mt-0.5">
-                              <Crown className="h-3 w-3 text-text" /> Host
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      {m.user_id === user?.id && (
-                        <span className="text-[10px] font-bold text-text-secondary border-2 border-border bg-bg/50 rounded-md px-2 py-0.5 uppercase tracking-wider">
-                          You
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="rounded-2xl border-2 border-border bg-surface p-6 text-center shadow-neubrutal">
-                <p className="text-xs font-bold uppercase tracking-wider text-text-tertiary mb-2">
-                  Minimum players to start
-                </p>
-                <p className="text-3xl font-extrabold text-text">
-                  {state.members.length}{" "}
-                  <span className="text-lg font-bold text-text-secondary">
-                    / 2
-                  </span>
-                </p>
-              </div>
-
-              {state.isHost ? (
-                <button
-                  onClick={startGame}
-                  disabled={state.members.length < 1}
-                  className="w-full rounded-xl border-2 border-border bg-primary py-3.5 text-sm font-bold text-text shadow-neubrutal transition-all enabled:hover:-translate-x-0.5 enabled:hover:-translate-y-0.5 enabled:hover:shadow-neubrutal-lg enabled:active:translate-x-0 enabled:active:translate-y-0 enabled:active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Play className="h-4 w-4" />
-                  Start Game
-                </button>
+          {state.code && (
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-2 rounded-xl border-2 border-border bg-surface px-4 py-2 text-sm font-mono font-bold text-text shadow-neubrutal-sm transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neubrutal active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer"
+            >
+              {state.code}
+              {copied ? (
+                <Check className="h-4 w-4" />
               ) : (
-                <div className="rounded-xl border-2 border-border bg-primary/20 p-4 text-center font-bold">
-                  <p className="text-sm text-text font-bold uppercase tracking-wider">
-                    Waiting for the host to start...
+                <Copy className="h-4 w-4" />
+              )}
+            </button>
+          )}
+
+          <div className="flex items-center gap-3">
+            <span className="hidden text-sm font-bold text-text-secondary md:block">
+              {user?.username}
+            </span>
+            <span className="h-3.5 w-3.5 rounded-full border-2 border-border bg-success animate-pulse" />
+          </div>
+        </header>
+
+        <main className="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-8">
+          {state.phase === "lobby" && (
+            <div className="grid gap-8 lg:grid-cols-3">
+              <div className="lg:col-span-2 space-y-6">
+                <div>
+                  <h1 className="text-2xl font-bold text-text">Game Lobby</h1>
+                  <p className="mt-1 text-sm font-medium text-text-secondary">
+                    Share the room code with friends to join the game.
                   </p>
                 </div>
-              )}
 
-              <button
-                onClick={() => {
-                  leaveRoom();
-                  navigate("/", { replace: true });
-                }}
-                className="w-full rounded-xl border-2 border-border bg-surface py-2.5 text-sm font-bold text-text-secondary shadow-neubrutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neubrutal hover:text-text active:translate-x-0 active:translate-y-0 active:shadow-none flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <LogOut className="h-4 w-4" />
-                Leave Room
-              </button>
-            </div>
-          </div>
-        )}
+                <div className="rounded-2xl border-2 border-border bg-surface p-6 shadow-neubrutal">
+                  <div className="flex items-center justify-between mb-5">
+                    <h2 className="text-sm font-bold text-text flex items-center gap-2 uppercase tracking-wider">
+                      <Users className="h-4 w-4" />
+                      Players ({state.members.length})
+                    </h2>
+                    {state.isHost && waitingForPlayers.length > 0 && (
+                      <span className="text-xs font-bold text-text-tertiary">
+                        {waitingForPlayers.length} waiting
+                      </span>
+                    )}
+                  </div>
 
-        {state.phase === "question" && (
-          <div className="grid gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <QuestionCard
-                question={state.question}
-                timeLimit={state.timeLimit}
-                questionIndex={state.questionIndex}
-                total={state.totalQuestions}
-                onAnswer={submitAnswer}
-                answerResult={state.answerResult}
-              />
-            </div>
-            <div className="lg:col-span-1">
-              <ScoreBoard scores={state.scores} currentUserId={user?.id} />
-            </div>
-          </div>
-        )}
-
-        {state.phase === "answered" && state.answerResult && (
-          <div className="grid gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <QuestionCard
-                question={state.question}
-                timeLimit={state.timeLimit}
-                questionIndex={state.questionIndex}
-                total={state.totalQuestions}
-                onAnswer={submitAnswer}
-                answerResult={state.answerResult}
-              />
-              <div className="mt-6 flex items-center justify-center">
-                <div className="flex items-center gap-2.5 text-sm font-bold text-text-secondary bg-primary/10 border-2 border-border px-5 py-2.5 rounded-xl shadow-neubrutal-sm">
-                  <div className="h-2 w-2 animate-ping rounded-full bg-text border border-border" />
-                  Waiting for other players...
-                </div>
-              </div>
-            </div>
-            <div className="lg:col-span-1">
-              <ScoreBoard scores={state.scores} currentUserId={user?.id} />
-            </div>
-          </div>
-        )}
-
-        {state.phase === "results" && (
-          <div className="mx-auto max-w-2xl">
-            <div className="text-center mb-8 flex flex-col items-center">
-              <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl border-4 border-border bg-primary shadow-neubrutal mb-4">
-                <Crown className="h-8 w-8 text-text" />
-              </div>
-              <h1 className="text-3xl font-extrabold text-text uppercase tracking-tight">
-                Game Over!
-              </h1>
-              <p className="mt-2 text-sm font-bold text-text-secondary">
-                Here are the final results
-              </p>
-            </div>
-
-            <div className="rounded-2xl border-2 border-border bg-surface overflow-hidden shadow-neubrutal-lg">
-              {state.results.map((r, i) => (
-                <div
-                  key={r.user.id}
-                  className={`flex items-center justify-between px-6 py-4 border-b-2 border-border last:border-b-0 ${
-                    r.user.id === user?.id
-                      ? "bg-primary font-bold text-text"
-                      : ""
-                  }`}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`flex h-8 w-8 items-center justify-center rounded-lg border-2 border-border text-sm font-extrabold shadow-neubrutal-sm ${
-                        i === 0
-                          ? "bg-primary text-text"
-                          : i === 1
-                            ? "bg-bg text-text-secondary"
-                            : i === 2
-                              ? "bg-amber-100 text-amber-700"
-                              : "bg-surface text-text-tertiary"
-                      }`}
-                    >
-                      {i + 1}
-                    </span>
-                    <div>
-                      <p className="text-sm font-bold text-text">
-                        {r.user.username}
-                        {r.user.id === user?.id && (
-                          <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider border border-border bg-bg/50 px-1.5 py-0.5 rounded ml-1.5 inline-block">
+                  <div className="space-y-3">
+                    {state.members.map((m) => (
+                      <div
+                        key={m.user_id}
+                        className={`flex items-center justify-between rounded-xl px-4 py-3 border-2 border-border shadow-neubrutal-sm transition-all ${
+                          m.is_host
+                            ? "bg-primary text-text font-bold"
+                            : "bg-surface hover:bg-surface-hover font-semibold text-text-secondary"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold border-2 border-border ${
+                              m.is_host
+                                ? "bg-bg text-text"
+                                : "bg-primary text-text"
+                            }`}
+                          >
+                            {m.username?.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-text">
+                              {m.username}
+                            </p>
+                            {m.is_host && (
+                              <p className="text-[10px] text-text-secondary font-bold flex items-center gap-1 uppercase tracking-wider mt-0.5">
+                                <Crown className="h-3 w-3 text-text" /> Host
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        {m.user_id === user?.id && (
+                          <span className="text-[10px] font-bold text-text-secondary border-2 border-border bg-bg/50 rounded-md px-2 py-0.5 uppercase tracking-wider">
                             You
                           </span>
                         )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="rounded-2xl border-2 border-border bg-surface p-6 text-center shadow-neubrutal">
+                  <p className="text-xs font-bold uppercase tracking-wider text-text-tertiary mb-2">
+                    Minimum players to start
+                  </p>
+                  <p className="text-3xl font-extrabold text-text">
+                    {state.members.length}{" "}
+                    <span className="text-lg font-bold text-text-secondary">
+                      / 2
+                    </span>
+                  </p>
+                </div>
+
+                {state.isHost ? (
+                  <button
+                    onClick={startGame}
+                    disabled={state.members.length < 1}
+                    className="w-full rounded-xl border-2 border-border bg-primary py-3.5 text-sm font-bold text-text shadow-neubrutal transition-all enabled:hover:-translate-x-0.5 enabled:hover:-translate-y-0.5 enabled:hover:shadow-neubrutal-lg enabled:active:translate-x-0 enabled:active:translate-y-0 enabled:active:shadow-none disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <Play className="h-4 w-4" />
+                    Start Game
+                  </button>
+                ) : (
+                  <div className="rounded-xl border-2 border-border bg-primary/20 p-4 text-center font-bold">
+                    <p className="text-sm text-text font-bold uppercase tracking-wider">
+                      Waiting for the host to start...
+                    </p>
+                  </div>
+                )}
+
+                <button
+                  onClick={() => {
+                    leaveRoom();
+                    navigate("/", { replace: true });
+                  }}
+                  className="w-full rounded-xl border-2 border-border bg-surface py-2.5 text-sm font-bold text-text-secondary shadow-neubrutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neubrutal hover:text-text active:translate-x-0 active:translate-y-0 active:shadow-none flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Leave Room
+                </button>
+              </div>
+            </div>
+          )}
+
+          {state.phase === "question" && (
+            <div className="grid gap-8 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <QuestionCard
+                  question={state.question}
+                  timeLimit={state.timeLimit}
+                  questionIndex={state.questionIndex}
+                  total={state.totalQuestions}
+                  onAnswer={submitAnswer}
+                  answerResult={state.answerResult}
+                />
+              </div>
+              <div className="lg:col-span-1">
+                <ScoreBoard scores={state.scores} currentUserId={user?.id} />
+              </div>
+            </div>
+          )}
+
+          {state.phase === "answered" && state.answerResult && (
+            <div className="grid gap-8 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <QuestionCard
+                  question={state.question}
+                  timeLimit={state.timeLimit}
+                  questionIndex={state.questionIndex}
+                  total={state.totalQuestions}
+                  onAnswer={submitAnswer}
+                  answerResult={state.answerResult}
+                />
+                <div className="mt-6 flex items-center justify-center">
+                  <div className="flex items-center gap-2.5 text-sm font-bold text-text-secondary bg-primary/10 border-2 border-border px-5 py-2.5 rounded-xl shadow-neubrutal-sm">
+                    <div className="h-2 w-2 animate-ping rounded-full bg-text border border-border" />
+                    Waiting for other players...
+                  </div>
+                </div>
+              </div>
+              <div className="lg:col-span-1">
+                <ScoreBoard scores={state.scores} currentUserId={user?.id} />
+              </div>
+            </div>
+          )}
+
+          {state.phase === "results" && (
+            <div className="mx-auto max-w-2xl">
+              <div className="text-center mb-8 flex flex-col items-center">
+                <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl border-4 border-border bg-primary shadow-neubrutal mb-4">
+                  <Crown className="h-8 w-8 text-text" />
+                </div>
+                <h1 className="text-3xl font-extrabold text-text uppercase tracking-tight">
+                  Game Over!
+                </h1>
+                <p className="mt-2 text-sm font-bold text-text-secondary">
+                  Here are the final results
+                </p>
+              </div>
+
+              <div className="rounded-2xl border-2 border-border bg-surface overflow-hidden shadow-neubrutal-lg">
+                {state.results.map((r, i) => (
+                  <div
+                    key={r.user.id}
+                    className={`flex items-center justify-between px-6 py-4 border-b-2 border-border last:border-b-0 ${
+                      r.user.id === user?.id
+                        ? "bg-primary font-bold text-text"
+                        : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span
+                        className={`flex h-8 w-8 items-center justify-center rounded-lg border-2 border-border text-sm font-extrabold shadow-neubrutal-sm ${
+                          i === 0
+                            ? "bg-primary text-text"
+                            : i === 1
+                              ? "bg-bg text-text-secondary"
+                              : i === 2
+                                ? "bg-amber-100 text-amber-700"
+                                : "bg-surface text-text-tertiary"
+                        }`}
+                      >
+                        {i + 1}
+                      </span>
+                      <div>
+                        <p className="text-sm font-bold text-text">
+                          {r.user.username}
+                          {r.user.id === user?.id && (
+                            <span className="text-[10px] text-text-secondary font-bold uppercase tracking-wider border border-border bg-bg/50 px-1.5 py-0.5 rounded ml-1.5 inline-block">
+                              You
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-mono text-lg font-bold text-text bg-surface/50 border border-border px-2.5 py-0.5 rounded inline-block">
+                        {r.score}
+                      </p>
+                      <p className="text-[10px] font-bold text-text-tertiary uppercase tracking-wider mt-1">
+                        points
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-mono text-lg font-bold text-text bg-surface/50 border border-border px-2.5 py-0.5 rounded inline-block">
-                      {r.score}
-                    </p>
-                    <p className="text-[10px] font-bold text-text-tertiary uppercase tracking-wider mt-1">
-                      points
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <button
-              onClick={() => navigate("/", { replace: true })}
-              className="mt-8 w-full rounded-xl border-2 border-border bg-primary py-3 text-sm font-bold text-text shadow-neubrutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neubrutal-lg active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer"
-            >
-              Back to Rooms
-            </button>
-          </div>
-        )}
-      </main>
-    </div>
+              <button
+                onClick={() => navigate("/", { replace: true })}
+                className="mt-8 w-full rounded-xl border-2 border-border bg-primary py-3 text-sm font-bold text-text shadow-neubrutal transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neubrutal-lg active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer"
+              >
+                Back to Rooms
+              </button>
+            </div>
+          )}
+        </main>
+      </div>
     </>
   );
 }
