@@ -53,7 +53,7 @@ export default function Room() {
   }, []);
 
   useEffect(() => {
-    if (state.error === "Invalid or unavailable room code") {
+    if (state.error) {
       const t = setTimeout(() => navigate("/", { replace: true }), 2000);
       return () => clearTimeout(t);
     }

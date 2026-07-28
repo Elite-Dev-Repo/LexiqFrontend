@@ -150,6 +150,10 @@ export default function useRoomSocket(roomCodeFromUrl) {
           update({ phase: 'results', results: msg.results })
           break
 
+        case 'room_deleted':
+          update({ phase: 'error', error: msg.reason || 'Room was deleted' })
+          break
+
         default:
           break
       }
