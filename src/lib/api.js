@@ -94,6 +94,9 @@ class ApiClient {
       body: JSON.stringify({ username, password, email }),
     });
   }
+  getUser() {
+    return this.request("/user/");
+  }
 
   getRooms() {
     return this.request("/rooms/");
@@ -116,6 +119,17 @@ class ApiClient {
 
   listDecks() {
     return this.request("/decks-list/");
+  }
+
+  getMessages() {
+    return this.request("/messages/");
+  }
+
+  sendMessage(text) {
+    return this.request("/messages/", {
+      method: "POST",
+      body: JSON.stringify({ message: text }),
+    });
   }
 }
 

@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auth from "./pages/Auth";
 import MainPage from "./pages/MainPage";
+import GlobalChat from "./pages/GlobalChat";
 import Room from "./pages/Room";
 
 const jsonLd = {
@@ -56,6 +57,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Room />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/global-chat"
+          element={
+            <ProtectedRoute>
+              <GlobalChat />
             </ProtectedRoute>
           }
         />
